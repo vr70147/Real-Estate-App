@@ -1,27 +1,33 @@
 import { useState } from 'react';
 import "./login.scss";
 import { Link, useNavigate } from "react-router-dom";
-import axios from 'axios';
+import apiReq from '../../lib/apiReq';
 
 function Login() {
   const [error, setError] = useState('');
+  const [button, setButton] = useState(false);
 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setButton(true);
+    setError('')
     const formData = new FormData(e.target);
     const username = formData.get('username');
     const password = formData.get('password');
 
     try {
-      const res = await axios.post('http://localhost:8800/api/auth/login', {
+      const res = await apiReq.post('/auth/login', {
         username, password
       })
-      navigate('/login');
+      localStorage.setItem('user', JSON.stringify(res.data));
+      navigate('/');
     }catch(err) {
       setError(err.response.data.message)
 
+    } finally{
+      setButton(false)
     }
   }
   return (
@@ -31,7 +37,7 @@ function Login() {
           <h1>Welcome back</h1>
           <input name="username" required type="text" placeholder="Username" />
           <input name="password" required type="password" placeholder="Password" />
-          <button>Login</button>
+          <button disabled={button}>Login</button>
           {error && <span>{error}</span>}
           <Link to="/register">{"Don't"} you have an account?</Link>
         </form>
