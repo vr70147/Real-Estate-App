@@ -47,7 +47,7 @@ npm install
    Create a .env file in the backend directory and define the following variables:
 
 ```bash
-PORT=5173
+PORT=3000
 DATABASE_URL=<your-mongodb-url>
 JWT_SECRET_KEY=<your-jwt-secret>
 ```
