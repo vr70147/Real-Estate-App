@@ -20,14 +20,14 @@ function Filter() {
     });
   };
 
-  const handleFilter = (e) => {
+  const handleFilter = () => {
     setSearchParams(query);
   };
 
   return (
     <div className="filter">
       <h1>
-        Search results for <b>{query.city}</b>
+        Search results for <b>{searchParams.get('city')}</b>
       </h1>
       <div className="top">
         <div className="item">
@@ -38,13 +38,19 @@ function Filter() {
             name="city"
             placeholder="City Location"
             onChange={handleChange}
+            defaultValue={query.city}
           />
         </div>
       </div>
       <div className="bottom">
         <div className="item">
           <label htmlFor="type">Type</label>
-          <select name="type" id="type" onChange={handleChange}>
+          <select
+            name="type"
+            id="type"
+            onChange={handleChange}
+            defaultValue={query.type}
+          >
             <option value="">any</option>
             <option value="buy">Buy</option>
             <option value="rent">Rent</option>
@@ -52,7 +58,12 @@ function Filter() {
         </div>
         <div className="item">
           <label htmlFor="property">Property</label>
-          <select name="property" id="property" onChange={handleChange}>
+          <select
+            name="property"
+            id="property"
+            onChange={handleChange}
+            defaultValue={query.property}
+          >
             <option value="">any</option>
             <option value="apartment">Apartment</option>
             <option value="house">House</option>
@@ -68,6 +79,7 @@ function Filter() {
             name="minPrice"
             placeholder="any"
             onChange={handleChange}
+            defaultValue={query.minPrice}
           />
         </div>
         <div className="item">
@@ -78,6 +90,7 @@ function Filter() {
             name="maxPrice"
             placeholder="any"
             onChange={handleChange}
+            defaultValue={query.maxPrice}
           />
         </div>
         <div className="item">
@@ -88,6 +101,7 @@ function Filter() {
             name="bedroom"
             placeholder="any"
             onChange={handleChange}
+            defaultValue={query.bedroom}
           />
         </div>
         <button onClick={handleFilter}>

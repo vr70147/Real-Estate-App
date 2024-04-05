@@ -1,12 +1,13 @@
 import './listPage.scss';
 import Filter from '../../components/filter/Filter';
 import Card from '../../components/card/Card';
-import { Await, useLoaderData } from 'react-router-dom';
+import { Await, useData } from 'react-router-dom';
 import { Suspense } from 'react';
 import Map from '../../components/map/Map.jsx';
 
 function ListPage() {
-  const data = useLoaderData();
+  const data = useData();
+  console.log(data);
   return (
     <div className="listPage">
       <div className="listContainer">
