@@ -1,12 +1,12 @@
 import './listPage.scss';
 import Filter from '../../components/filter/Filter';
 import Card from '../../components/card/Card';
-import { Await, useData } from 'react-router-dom';
+import Map from '../../components/map/Map';
+import { Await, useLoaderData } from 'react-router-dom';
 import { Suspense } from 'react';
-import Map from '../../components/map/Map.jsx';
 
 function ListPage() {
-  const data = useData();
+  const data = useLoaderData();
   console.log(data);
   return (
     <div className="listPage">
@@ -16,7 +16,7 @@ function ListPage() {
           <Suspense fallback={<p>Loading...</p>}>
             <Await
               resolve={data.postResponse}
-              errorElement={<p>Error loading posts</p>}
+              errorElement={<p>Error loading posts!</p>}
             >
               {(postResponse) =>
                 postResponse.data.map((post) => (
@@ -31,7 +31,7 @@ function ListPage() {
         <Suspense fallback={<p>Loading...</p>}>
           <Await
             resolve={data.postResponse}
-            errorElement={<p>Error loading posts</p>}
+            errorElement={<p>Error loading posts!</p>}
           >
             {(postResponse) => <Map items={postResponse.data} />}
           </Await>
