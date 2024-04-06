@@ -11,12 +11,18 @@ function HomePage() {
     <div className="homePage">
       <div className="textContainer">
         <div className="wrapper">
-          <h1 className="title">Find Real Estate & Get Your Dream Place</h1>
+          <h1 className="title">Real Estate Project By Raanan Adut</h1>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos
-            explicabo suscipit cum eius, iure est nulla animi consequatur
-            facilis id pariatur fugit quos laudantium temporibus dolor ea
-            repellat provident impedit!
+            The Real Estate Project is a cutting-edge web application that
+            transforms real estate interactions for buyers and sellers.
+            Leveraging a powerful tech stack with{' '}
+            <b>React, Node.js, MongoDB, and Socket.io</b>, it offers a
+            responsive, user-friendly interface and efficient backend
+            operations. React ensures a seamless user experience, while Node.js
+            and MongoDB handle data management and server-side logic
+            efficiently. Socket.io introduces real-time features like live chats
+            and instant notifications, making the platform interactive and
+            dynamic.
           </p>
           <SearchBar />
           <div className="boxes">

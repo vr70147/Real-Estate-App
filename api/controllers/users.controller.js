@@ -13,6 +13,7 @@ export const getUsers = async (req, res) => {
 
 export const getUser = async (req, res) => {
   const id = req.params.id;
+
   try {
     const user = await prisma.user.findUnique({
       where: { id },
@@ -31,8 +32,9 @@ export const updateUser = async (req, res) => {
 
   if (id !== tokenUserId)
     return res.status(403).json({ message: 'Not Authorized' });
-  const body = req.body;
+
   let updatePassword = null;
+
   try {
     if (password) {
       updatePassword = await bcrypt.hash(password, 10);
@@ -46,7 +48,6 @@ export const updateUser = async (req, res) => {
         ...(avatar && { avatar }),
       },
     });
-
     res.status(200).json(updatedUser);
   } catch (err) {
     console.log(err);
@@ -75,6 +76,7 @@ export const deleteUser = async (req, res) => {
 export const savePost = async (req, res) => {
   const postId = req.body.postId;
   const tokenUserId = req.userId;
+
   try {
     const savedPost = await prisma.savedPost.findUnique({
       where: {
@@ -109,6 +111,7 @@ export const savePost = async (req, res) => {
 
 export const profilePosts = async (req, res) => {
   const tokenUserId = req.userId;
+
   try {
     const userPosts = await prisma.post.findMany({
       where: { userId: tokenUserId },
@@ -120,6 +123,7 @@ export const profilePosts = async (req, res) => {
         post: true,
       },
     });
+
     const savedPosts = saved.map((item) => item.post);
     res.status(200).json({ userPosts, savedPosts });
   } catch (error) {
@@ -130,6 +134,7 @@ export const profilePosts = async (req, res) => {
 
 export const getNotificationNumber = async (req, res) => {
   const tokenUserId = req.userId;
+
   try {
     const number = await prisma.chat.count({
       where: {
@@ -143,7 +148,6 @@ export const getNotificationNumber = async (req, res) => {
         },
       },
     });
-    console.log(number);
     res.status(200).json(number);
   } catch (err) {
     console.log(err);

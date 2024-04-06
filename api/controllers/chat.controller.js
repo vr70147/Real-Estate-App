@@ -14,6 +14,7 @@ export const getChats = async (req, res) => {
 
     for (const chat of chats) {
       const receiverId = chat.userIDs.find((id) => id !== tokenUserId);
+
       const receiver = await prisma.user.findUnique({
         where: {
           id: receiverId,
@@ -26,7 +27,6 @@ export const getChats = async (req, res) => {
       });
       chat.receiver = receiver;
     }
-
     res.status(200).json(chats);
   } catch (err) {
     console.log(err);

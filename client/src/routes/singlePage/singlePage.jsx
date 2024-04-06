@@ -17,6 +17,7 @@ function SinglePage() {
     if (!currentUser) {
       navigate('/login');
     }
+
     setSaved((prev) => !prev);
 
     try {
@@ -26,6 +27,7 @@ function SinglePage() {
       setSaved((prev) => !prev);
     }
   };
+
   return (
     <div className="singlePage">
       <div className="details">

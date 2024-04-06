@@ -7,7 +7,6 @@ import { SocketContext } from '../../context/SocketContext';
 import { useNotificationStore } from '../../lib/notificationStore';
 
 function Chat({ chats }) {
-  console.log(chats);
   const [chat, setChat] = useState(null);
   const { currentUser } = useContext(AuthContext);
   const { socket } = useContext(SocketContext);
@@ -39,6 +38,7 @@ function Chat({ chats }) {
     const text = formData.get('text');
 
     if (!text) return;
+
     try {
       const res = await apiReq.post('/messages/' + chat.id, { text });
       setChat((prev) => ({ ...prev, messages: [...prev.messages, res.data] }));
