@@ -11,7 +11,7 @@ function HomePage() {
     <div className="homePage">
       <div className="textContainer">
         <div className="wrapper">
-          <h1 className="title">Real Estate Project By Raanan Adut</h1>
+          <h1 className="title">Real Estate Project by Raanan Adut</h1>
           <p>
             The Real Estate Project is a cutting-edge web application that
             transforms real estate interactions for buyers and sellers.
