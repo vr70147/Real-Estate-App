@@ -13,7 +13,6 @@ const addUser = (userId, socketId) => {
   if (!userExist) {
     onlineUser.push({ userId, socketId });
   }
-  console.log(onlineUser);
 };
 
 const removeUser = (socketId) => {
@@ -21,7 +20,6 @@ const removeUser = (socketId) => {
 };
 
 const getUser = (userId) => {
-  console.log(onlineUser.find((user) => user.userId === userId));
   return onlineUser.find((user) => user.userId === userId);
 };
 

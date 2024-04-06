@@ -1,9 +1,10 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import './chat.scss';
 import { AuthContext } from '../../context/AuthContext';
 import apiReq from '../../lib/apiReq';
 import { format } from 'timeago.js';
 import { SocketContext } from '../../context/SocketContext';
+import { useNotificationStore } from '../../lib/notificationStore';
 
 function Chat({ chats }) {
   console.log(chats);
@@ -11,9 +12,20 @@ function Chat({ chats }) {
   const { currentUser } = useContext(AuthContext);
   const { socket } = useContext(SocketContext);
 
+  const MessageEndRef = useRef();
+
+  const decrease = useNotificationStore((state) => state.decrease);
+
+  useEffect(() => {
+    MessageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [chat]);
+
   const handleOpenChat = async (id, receiver) => {
     try {
       const res = await apiReq('/chats/' + id);
+      if (!res.data.seenBy.includes(currentUser.id)) {
+        decrease();
+      }
       setChat({ ...res.data, receiver });
     } catch (err) {
       console.log(err);
@@ -112,6 +124,7 @@ function Chat({ chats }) {
                 <span>{format(message.createdAt)}</span>
               </div>
             ))}
+            <div ref={MessageEndRef}></div>
           </div>
           <form onSubmit={handleSubmit} className="bottom">
             <textarea name="text"></textarea>
