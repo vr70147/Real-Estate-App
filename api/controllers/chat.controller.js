@@ -1,5 +1,4 @@
 import prisma from '../lib/prisma.js';
-import jwt from 'jsonwebtoken';
 
 export const getChats = async (req, res) => {
   const tokenUserId = req.userId;

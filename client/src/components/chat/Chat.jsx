@@ -1,16 +1,50 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import './chat.scss';
+import { AuthContext } from '../../context/AuthContext';
+import apiReq from '../../lib/apiReq';
+import { format } from 'timeago.js';
 
 function Chat({ chats }) {
-  const [chat, setChat] = useState(false);
+  const [chat, setChat] = useState(null);
+  const { currentUser } = useContext(AuthContext);
+  const handleOpenChat = async (id, receiver) => {
+    try {
+      const res = await apiReq('/chats/' + id);
+      setChat({ ...res.data, receiver });
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-  console.log(chats);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const text = formData.get('text');
+
+    if (!text) return;
+    try {
+      const res = await apiReq.post('/messages/' + chat.id, { text });
+      setChat((prev) => ({ ...prev, messages: [...prev.messages, res.data] }));
+      e.target.reset();
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <div className="chat">
       <div className="messages">
         <h1>Messages</h1>
         {chats?.map((c) => (
-          <div className="message" key={c.id}>
+          <div
+            className="message"
+            key={c.id}
+            style={{
+              backgroundColor: c.seenBy.includes(currentUser.id)
+                ? 'white'
+                : '#fecd514e',
+            }}
+            onClick={() => handleOpenChat(c.id, c.receiver)}
+          >
             <img src={c.receiver.avatar || '/noavatar.jpg'} alt="" />
             <span>{c.receiver.username}</span>
             <p>{c.lastMessage}</p>
@@ -21,62 +55,36 @@ function Chat({ chats }) {
         <div className="chatBox">
           <div className="top">
             <div className="user">
-              <img
-                src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                alt=""
-              />
-              John Doe
+              <img src={chat.receiver.avatar || 'noavatar.jpg'} alt="" />
+              {chat.receiver.username}
             </div>
             <span className="close" onClick={() => setChat(null)}>
               X
             </span>
           </div>
           <div className="center">
-            <div className="chatMessage">
-              <p>Lorem ipsum dolor sit amet</p>
-              <span>1 hour ago</span>
-            </div>
-            <div className="chatMessage own">
-              <p>Lorem ipsum dolor sit amet</p>
-              <span>1 hour ago</span>
-            </div>
-            <div className="chatMessage">
-              <p>Lorem ipsum dolor sit amet</p>
-              <span>1 hour ago</span>
-            </div>
-            <div className="chatMessage own">
-              <p>Lorem ipsum dolor sit amet</p>
-              <span>1 hour ago</span>
-            </div>
-            <div className="chatMessage">
-              <p>Lorem ipsum dolor sit amet</p>
-              <span>1 hour ago</span>
-            </div>
-            <div className="chatMessage own">
-              <p>Lorem ipsum dolor sit amet</p>
-              <span>1 hour ago</span>
-            </div>
-            <div className="chatMessage">
-              <p>Lorem ipsum dolor sit amet</p>
-              <span>1 hour ago</span>
-            </div>
-            <div className="chatMessage own">
-              <p>Lorem ipsum dolor sit amet</p>
-              <span>1 hour ago</span>
-            </div>
-            <div className="chatMessage">
-              <p>Lorem ipsum dolor sit amet</p>
-              <span>1 hour ago</span>
-            </div>
-            <div className="chatMessage own">
-              <p>Lorem ipsum dolor sit amet</p>
-              <span>1 hour ago</span>
-            </div>
+            {chat.messages.map((message) => (
+              <div
+                className="chatMessage"
+                style={{
+                  alignSelf:
+                    message.userId === currentUser.id
+                      ? 'flex-end'
+                      : 'flex-start',
+                  textAlign:
+                    message.userId === currentUser.id ? 'right' : 'left',
+                }}
+                key={message.id}
+              >
+                <p>{message.text}</p>
+                <span>{format(message.createdAt)}</span>
+              </div>
+            ))}
           </div>
-          <div className="bottom">
-            <textarea></textarea>
+          <form onSubmit={handleSubmit} className="bottom">
+            <textarea name="text"></textarea>
             <button>Send</button>
-          </div>
+          </form>
         </div>
       )}
     </div>
